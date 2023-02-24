@@ -9,6 +9,8 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     
+    @IBOutlet var viewColor: UIView!
+    
     @IBOutlet var redValueLabel: UILabel!
     @IBOutlet var greenValueLabel: UILabel!
     @IBOutlet var blueValueLabel: UILabel!
@@ -23,84 +25,100 @@ class SettingsViewController: UIViewController {
     
     var colorView: UIColor!
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setLabelValue()
         
-        setTFValue()
+        redValueTF.keyboardType = .decimalPad
         
-        setSliderValue()
+        setLabelValue(for: redValueLabel, greenValueLabel, blueValueLabel)
+        setTFValue(for: redValueTF, greenValueTF, blueValueTF)
+        setSliderValue(for: redSlider, greenSlider, blueSlider)
+        
+        setViewColor()
 
     }
     
-    
-    @IBAction func redSliderAction() {
-        redValueLabel.text = String(format: "%.2f", redSlider.value)
-        redValueTF.text = String(format: "%.2f", redSlider.value)
+    @IBAction func sliderChange(_ sender: UISlider) {
+        setViewColor()
+        switch sender {
+        case redSlider:
+            redValueLabel.text = string(from: redSlider.value)
+            redValueTF.text = string(from: redSlider.value)
+        case greenSlider:
+            greenValueLabel.text = string(from: greenSlider.value)
+            greenValueTF.text = string(from: greenSlider.value)
+        default:
+            blueValueLabel.text = string(from: blueSlider.value)
+            blueValueTF.text = string(from: blueSlider.value)
+        }
     }
-    
-    @IBAction func greenSliderAction() {
-        greenValueLabel.text = String(format: "%.2f", greenSlider.value)
-        greenValueTF.text = String(format: "%.2f", greenSlider.value)
-    }
-    
-    @IBAction func blueSlideraction() {
-        blueValueLabel.text = String(format: "%.2f", blueSlider.value)
-        blueValueTF.text = String(format: "%.2f", blueSlider.value)
-    }
-    
-
 }
 
-extension SettingsViewController {
-    /*
-    func definitionOf(color colorObject: UIColor) -> [String: CGFloat] {
-        var colors: [String: CGFloat] = [: ]
+private extension SettingsViewController {
+
+    func definitionOf(color colorObject: UIColor) -> [Float] {
+        var colors: [Float] = []
         let color = CIColor(color: colorObject)
         let redColor = color.red
         let greenColor = color.green
         let blueColor = color.blue
         
-        colors["red"] = redColor
-        colors["green"] = greenColor
-        colors["blue"] = blueColor
-        
-        return colors
-    }
-     */
-    func definitionOf(color colorObject: UIColor) -> [CGFloat] {
-        var colors: [CGFloat] = []
-        let color = CIColor(color: colorObject)
-        let redColor = color.red
-        let greenColor = color.green
-        let blueColor = color.blue
-        
-        colors.append(redColor)
-        colors.append(greenColor)
-        colors.append(blueColor)
-        
-        print(colors)
+        colors.append(Float(redColor))
+        colors.append(Float(greenColor))
+        colors.append(Float(blueColor))
         
         return colors
     }
     
-    func setLabelValue() {
-        redValueLabel.text = String(format: "%.2f", definitionOf(color: colorView)[0])
-        greenValueLabel.text = String(format: "%.2f", definitionOf(color: colorView)[1])
-        blueValueLabel.text = String(format: "%.2f", definitionOf(color: colorView)[2])
+    func string(from color: Float) -> String {
+        String(format: "%.2f", color)
     }
     
-    func setTFValue() {
-        redValueTF.text = String(format: "%.2f", definitionOf(color: colorView)[0])
-        greenValueTF.text = String(format: "%.2f", definitionOf(color: colorView)[1])
-        blueValueTF.text = String(format: "%.2f", definitionOf(color: colorView)[2])
+    func setLabelValue(for labels: UILabel...) {
+        labels.forEach { label in
+            switch label {
+            case redValueLabel:
+                redValueLabel.text = string(from: definitionOf(color: colorView)[0])
+            case greenValueLabel:
+                greenValueLabel.text = string(from: definitionOf(color: colorView)[1])
+            default:
+                blueValueLabel.text = string(from: definitionOf(color: colorView)[2])
+            }
+        }
     }
     
-    func setSliderValue() {
-        redSlider.value = Float(definitionOf(color: colorView)[0])
-        greenSlider.value = Float(definitionOf(color: colorView)[1])
-        blueSlider.value = Float(definitionOf(color: colorView)[2])
+    func setTFValue(for textFields: UITextField...) {
+        textFields.forEach { textField in
+            switch textField {
+            case redValueTF:
+                redValueTF.text = string(from: definitionOf(color: colorView)[0])
+            case greenValueTF:
+                greenValueTF.text = string(from: definitionOf(color: colorView)[1])
+            default:
+                blueValueTF.text = string(from: definitionOf(color: colorView)[2])
+            }
+        }
+    }
+    
+    func setSliderValue(for sliders: UISlider...) {
+        sliders.forEach { slider in
+            switch slider {
+            case redSlider:
+                redSlider.value = definitionOf(color: colorView)[0]
+            case greenSlider:
+                greenSlider.value = definitionOf(color: colorView)[1]
+            default:
+                blueSlider.value = definitionOf(color: colorView)[2]
+            }
+        }
+    }
+    
+    func setViewColor() {
+        viewColor.backgroundColor = UIColor(
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
+            alpha: 1)
     }
     
     
