@@ -9,11 +9,17 @@ import UIKit
 
 class StartViewController: UIViewController {
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let settingVC = segue.destination as? SettingsViewController else { return }
+        settingVC.colorView = view.backgroundColor
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
 
+    }
+    
+    
 
 }
 
