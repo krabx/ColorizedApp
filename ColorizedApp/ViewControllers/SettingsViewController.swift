@@ -24,6 +24,13 @@ class SettingsViewController: UIViewController {
     @IBOutlet var blueValueTF: UITextField!
     
     var colorView: UIColor!
+    unowned var delegate: SettingsViewControllerDelegate!
+    var currentColor: UIColor!
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +58,17 @@ class SettingsViewController: UIViewController {
             blueValueLabel.text = string(from: blueSlider.value)
             blueValueTF.text = string(from: blueSlider.value)
         }
+    }
+    
+    
+    @IBAction func doneButtonPressed() {
+        currentColor = UIColor(
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
+            alpha: 1)
+        delegate.setNewBackgroundColor(from: currentColor)
+        dismiss(animated: true)
     }
 }
 
@@ -120,7 +138,4 @@ private extension SettingsViewController {
             blue: CGFloat(blueSlider.value),
             alpha: 1)
     }
-    
-    
-    
 }

@@ -157,6 +157,9 @@
                                 <state key="normal" title="Done">
                                     <color key="titleColor" systemColor="labelColor"/>
                                 </state>
+                                <connections>
+                                    <action selector="doneButtonPressed" destination="XVq-4L-j2d" eventType="touchUpInside" id="sN6-NO-NnN"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="M4q-gj-Yhz"/>
