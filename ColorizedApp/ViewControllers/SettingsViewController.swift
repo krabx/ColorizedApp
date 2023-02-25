@@ -164,7 +164,6 @@ extension SettingsViewController: UITextFieldDelegate {
         
         if let textFieldFloat = Float(textFieldText) {
             refreshSliderValue(from: textField, textFieldFloat)
-            
         } else {
             showAlert(
                 withTitle: "Warning",
