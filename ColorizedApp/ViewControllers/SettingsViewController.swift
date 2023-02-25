@@ -58,7 +58,6 @@ final class SettingsViewController: UIViewController {
         }
     }
     
-    
     @IBAction func doneButtonPressed() {
         guard let currentColor = viewColor.backgroundColor else { return }
         delegate.setNewBackgroundColor(from: currentColor)
@@ -157,7 +156,6 @@ extension SettingsViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
         let defaultSliderValue: Float = 1
         
         guard let textFieldText = textField.text else { return }
