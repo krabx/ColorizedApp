@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+final class SettingsViewController: UIViewController {
     
     @IBOutlet var viewColor: UIView!
     
@@ -67,7 +67,7 @@ class SettingsViewController: UIViewController {
 }
 
 extension SettingsViewController: UITextFieldDelegate {
-
+    
     private func definitionOf(color colorObject: UIColor) -> [Float] {
         var colors: [Float] = []
         let color = CIColor(color: colorObject)
@@ -157,20 +157,47 @@ extension SettingsViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let textFieldText = textField.text {
-            if let textFieldFloat = Float(textFieldText) {
-                switch textField {
-                case redValueTF:
-                    redSlider.setValue(textFieldFloat, animated: true)
-                case greenValueTF:
-                    greenSlider.setValue(textFieldFloat, animated: true)
-                default:
-                    blueSlider.setValue(textFieldFloat, animated: true)
-                }
+        
+        let defaultSliderValue: Float = 1
+        
+        guard let textFieldText = textField.text else { return }
+        
+        if let textFieldFloat = Float(textFieldText) {
+            refreshSliderValue(from: textField, textFieldFloat)
+            
+        } else {
+            showAlert(
+                withTitle: "Warning",
+                andMessage: "You entered an invalid value. The field should not contain letters and value must be between 0 and 1.",
+                textField: textField,
+                sliderValue: defaultSliderValue
+            )
+            refreshSliderValue(from: textField, defaultSliderValue)
+        }
+        
+        func refreshSliderValue(from textField: UITextField, _ sliderValue: Float) {
+            switch textField {
+            case redValueTF:
+                redSlider.setValue(sliderValue, animated: true)
+            case greenValueTF:
+                greenSlider.setValue(sliderValue, animated: true)
+            default:
+                blueSlider.setValue(sliderValue, animated: true)
             }
         }
         
         setLabelValue(for: redValueLabel, greenValueLabel, blueValueLabel)
         setViewColor()
+    }
+    
+    
+    private func showAlert(withTitle: String, andMessage: String, textField: UITextField, sliderValue: Float) {
+        let alert = UIAlertController(title: withTitle, message: andMessage, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+            textField.text = String(format: "%.2f", sliderValue)
+        }
+        
+        alert.addAction(alertAction)
+        present(alert, animated: true)
     }
 }
