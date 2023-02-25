@@ -143,7 +143,12 @@ extension SettingsViewController: UITextFieldDelegate {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         let flexibleSpace = UIBarButtonItem(systemItem: .flexibleSpace)
-        let doneKeyboardButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(doneKeyboardPressed))
+        let doneKeyboardButton = UIBarButtonItem(
+            title: "Done",
+            style: UIBarButtonItem.Style.done,
+            target: self,
+            action: #selector(doneKeyboardPressed)
+        )
         toolBar.items = [flexibleSpace, doneKeyboardButton]
         
         redValueTF.inputAccessoryView = toolBar
@@ -188,8 +193,17 @@ extension SettingsViewController: UITextFieldDelegate {
     }
     
     
-    private func showAlert(withTitle: String, andMessage: String, textField: UITextField, sliderValue: Float) {
-        let alert = UIAlertController(title: withTitle, message: andMessage, preferredStyle: .alert)
+    private func showAlert(
+        withTitle: String,
+        andMessage: String,
+        textField: UITextField,
+        sliderValue: Float
+    ) {
+        let alert = UIAlertController(
+            title: withTitle,
+            message: andMessage,
+            preferredStyle: .alert
+        )
         let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
             textField.text = String(format: "%.2f", sliderValue)
         }
