@@ -18,11 +18,6 @@ class StartViewController: UIViewController {
         settingVC.colorView = view.backgroundColor
         settingVC.delegate = self
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
 }
 
 extension StartViewController: SettingsViewControllerDelegate {
